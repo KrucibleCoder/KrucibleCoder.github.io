@@ -24,7 +24,7 @@
       content="Backend-focused developer building scalable systems and AI-powered applications."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://yourname.github.io/" />
+    <meta property="og:url" content="https://KrucibleCoder.github.io/" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -38,7 +38,7 @@
         "@context": "https://schema.org",
         "@type": "Person",
         "name": "Krishna Aher",
-        "url": "https://yourname.github.io/",
+        "url": "https://KrucibleCoder.github.io/",
         "sameAs": [
           "https://github.com/KrucibleCoder",
           "https://www.linkedin.com/in/krishna-kiran-aher/"
@@ -87,13 +87,15 @@
           </p>
         </div>
 
-        <a
-          href="#contact"
-          aria-label="Jump to contact section"
-          class="rounded-full border border-slate-600 bg-slate-900/50 backdrop-blur px-5 py-3 text-sm font-semibold text-white transition hover:border-slate-400"
-        >
-          Contact
-        </a>
+        <nav aria-label="Site navigation">
+          <a
+            href="#contact"
+            aria-label="Jump to contact section"
+            class="rounded-full border border-slate-600 bg-slate-900/50 backdrop-blur px-5 py-3 text-sm font-semibold text-white transition hover:border-slate-400"
+          >
+            Contact
+          </a>
+        </nav>
       </header>
 
       <main class="mx-auto max-w-6xl px-6 pb-16">
@@ -123,11 +125,12 @@
               </p>
 
               <p class="text-sm text-slate-500 animate-pulse">
-                Hint: Press
+                Press
                 <kbd
                   class="px-2 py-0.5 mx-1 bg-slate-800 rounded-md text-slate-300 border border-slate-600 text-xs"
                   >Q</kbd
                 >
+                to form a hidden message
               </p>
             </div>
 
@@ -451,6 +454,7 @@
         canvas.width = innerWidth * dpr;
         canvas.height = innerHeight * dpr;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        initLetters();
         generateTargets();
       }
 
@@ -491,7 +495,7 @@
           this.x += this.vx;
           this.y += this.vy;
 
-          if (mouse.x) {
+          if (mouse.x !== null) {
             let dx = this.x - mouse.x;
             let dy = this.y - mouse.y;
             let distSq = dx * dx + dy * dy;
@@ -514,17 +518,21 @@
       const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ/<>{}[]01";
       let letters = [];
 
-      const count = Math.min(200, window.innerWidth / 6);
-
-      for (let i = 0; i < count; i++) {
-        letters.push(
-          new Letter(
-            Math.random() * innerWidth,
-            Math.random() * innerHeight,
-            chars[Math.floor(Math.random() * chars.length)],
-          ),
-        );
+      function initLetters() {
+        const count = Math.min(200, window.innerWidth / 6);
+        letters = [];
+        for (let i = 0; i < count; i++) {
+          letters.push(
+            new Letter(
+              Math.random() * innerWidth,
+              Math.random() * innerHeight,
+              chars[Math.floor(Math.random() * chars.length)],
+            ),
+          );
+        }
       }
+
+      initLetters();
 
       function generateTargets() {
         const spacing = 14;
@@ -540,7 +548,6 @@
         }
       }
 
-      generateTargets();
       resizeCanvas();
 
       window.addEventListener("keydown", (e) => {
