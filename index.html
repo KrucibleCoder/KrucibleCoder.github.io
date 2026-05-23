@@ -55,19 +55,6 @@
   </head>
 
   <body class="bg-slate-950 text-slate-100 relative overflow-x-hidden">
-    <canvas
-      id="bg"
-      class="fixed inset-0 -z-10 w-full h-full pointer-events-none"
-    ></canvas>
-    <noscript
-      >Interactive developer background animation requires JavaScript.</noscript
-    >
-
-    <div
-      id="cursor-light"
-      class="pointer-events-none fixed inset-0 z-0 opacity-0 transition-opacity duration-300"
-    ></div>
-
     <div
       class="relative z-10 min-h-screen bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.18),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(16,185,129,0.15),_transparent_30%)]"
     >
@@ -104,13 +91,6 @@
           <!-- ================= LEFT COLUMN ================= -->
           <div class="space-y-6">
             <!-- HERO CONTENT -->
-            <div
-              class="inline-flex items-center rounded-full bg-slate-800/80 px-4 py-2 text-sm text-sky-300 ring-1 ring-slate-700 backdrop-blur"
-            >
-              <span class="mr-2 h-2 w-2 rounded-full bg-sky-300"></span>
-              Open to internships and freelance work
-            </div>
-
             <div class="space-y-4">
               <h2
                 class="text-5xl font-bold tracking-tight text-white sm:text-6xl"
@@ -119,18 +99,11 @@
                 applications.
               </h2>
 
+              <br/>
+
               <p class="max-w-2xl text-xl leading-8 text-slate-300">
                 Backend engineering, system design, and AI solutions with a
                 focus on performance and clean architecture.
-              </p>
-
-              <p class="text-sm text-slate-500 animate-pulse">
-                Press
-                <kbd
-                  class="px-2 py-0.5 mx-1 bg-slate-800 rounded-md text-slate-300 border border-slate-600 text-xs"
-                  >Q</kbd
-                >
-                to form a hidden message
               </p>
             </div>
 
@@ -149,6 +122,8 @@
                 About Me
               </a>
             </div>
+
+            <br>
 
             <!-- ================= TECH STACK ================= -->
             <div
@@ -304,9 +279,9 @@
                   <p class="text-sm uppercase tracking-[0.35em] text-slate-400">
                     Certifications
                   </p>
-                  <!-- Structurally updated to h3 -->
+                  <!-- Updated heading to match the section -->
                   <h3 class="mt-2 text-2xl font-semibold text-white">
-                    Backend + AI focused builds
+                    Certifications and Learning
                   </h3>
                 </div>
               </div>
@@ -318,9 +293,9 @@
                   <p class="text-sm uppercase tracking-[0.35em] text-slate-400">
                     Development
                   </p>
-                  <!-- Structurally updated to h4 -->
+                  <!-- Fixed capitalization -->
                   <h4 class="mt-3 text-lg font-semibold text-white">
-                    MERN Stack, Java, Python, Javascript
+                    MERN Stack, Java, Python, JavaScript
                   </h4>
                 </div>
 
@@ -439,128 +414,5 @@
         </section>
       </main>
     </div>
-
-    <script>
-      const canvas = document.getElementById("bg");
-      const ctx = canvas.getContext("2d");
-      const light = document.getElementById("cursor-light");
-
-      let mouse = { x: null, y: null };
-      let forming = false;
-      const quote = "BUILD FAST. STAY SHARP.";
-
-      function resizeCanvas() {
-        const dpr = window.devicePixelRatio || 1;
-        canvas.width = innerWidth * dpr;
-        canvas.height = innerHeight * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        initLetters();
-        generateTargets();
-      }
-
-      window.addEventListener("resize", resizeCanvas);
-
-      window.addEventListener("mousemove", (e) => {
-        const x = e.clientX;
-        const y = e.clientY;
-        mouse.x = x;
-        mouse.y = y;
-
-        light.style.opacity = "1";
-        light.style.background = `radial-gradient(300px circle at ${x}px ${y}px, rgba(255,255,255,0.08), transparent 60%)`;
-      });
-
-      document.addEventListener("mouseleave", () => {
-        light.style.opacity = "0";
-      });
-
-      class Letter {
-        constructor(x, y, char) {
-          this.x = x;
-          this.y = y;
-          this.char = char;
-          this.targetX = x;
-          this.targetY = y;
-          this.vx = (Math.random() - 0.5) * 0.5;
-          this.vy = (Math.random() - 0.5) * 0.5;
-        }
-
-        draw() {
-          ctx.fillStyle = "rgba(255,255,255,0.15)";
-          ctx.font = "bold 18px monospace";
-          ctx.fillText(this.char, this.x, this.y);
-        }
-
-        update() {
-          this.x += this.vx;
-          this.y += this.vy;
-
-          if (mouse.x !== null) {
-            let dx = this.x - mouse.x;
-            let dy = this.y - mouse.y;
-            let distSq = dx * dx + dy * dy;
-
-            if (distSq < 22500) {
-              this.x += dx * 0.05;
-              this.y += dy * 0.05;
-            }
-          }
-
-          if (forming) {
-            this.x += (this.targetX - this.x) * 0.08;
-            this.y += (this.targetY - this.y) * 0.08;
-          }
-
-          this.draw();
-        }
-      }
-
-      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ/<>{}[]01";
-      let letters = [];
-
-      function initLetters() {
-        const count = Math.min(200, window.innerWidth / 6);
-        letters = [];
-        for (let i = 0; i < count; i++) {
-          letters.push(
-            new Letter(
-              Math.random() * innerWidth,
-              Math.random() * innerHeight,
-              chars[Math.floor(Math.random() * chars.length)],
-            ),
-          );
-        }
-      }
-
-      initLetters();
-
-      function generateTargets() {
-        const spacing = 14;
-        const total = quote.length * spacing;
-        const startX = innerWidth / 2 - total / 2;
-        const y = innerHeight * 0.35;
-
-        for (let i = 0; i < quote.length; i++) {
-          if (!letters[i]) break;
-          letters[i].char = quote[i];
-          letters[i].targetX = startX + i * spacing;
-          letters[i].targetY = y;
-        }
-      }
-
-      resizeCanvas();
-
-      window.addEventListener("keydown", (e) => {
-        if (e.key.toLowerCase() === "q") forming = !forming;
-      });
-
-      function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        letters.forEach((l) => l.update());
-        requestAnimationFrame(animate);
-      }
-
-      animate();
-    </script>
   </body>
 </html>
