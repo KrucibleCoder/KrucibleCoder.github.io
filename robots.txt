@@ -1,4 +1,4 @@
 User-agent: *
-Allow: /
+Allow: /index.html
 
-Sitemap: https://yourname.github.io/sitemap.xml
+Sitemap: https://KrucibleCoder.github.io/sitemap.xml
